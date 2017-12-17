@@ -26,7 +26,7 @@ __Here's a demo:__ http://builds.mspi.es <sub><sup>([other themes](#theming-supp
 - [BuddyBuild](https://buddybuild.com) <sub><sup>([Configuration](#buddybuild))</sup></sub>
 - [Bamboo](https://www.atlassian.com/software/bamboo) <sub><sup>([Configuration](#bamboo))</sup></sub>
 - [Drone](http://readme.drone.io/) <sub><sup>([Configuration](#drone))</sup></sub>
-- [DroneLatestBuild](http://readme.drone.io/) <sub><sup>([Configuration](#drone-latest-build))</sup></sub>
+- [Drone Latest Build](http://readme.drone.io/) <sub><sup>([Configuration](#drone-latest-build))</sup></sub>
 
 Feel free to make a [Fork](https://github.com/marcells/node-build-monitor/fork) of this repository and add another service.
 
