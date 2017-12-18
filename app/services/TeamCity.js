@@ -1,4 +1,4 @@
-var request = require('request'),
+var request = require('../requests'),
     async = require('async'),
     moment = require('moment'),
     TEAMCITY_DATE_FORMAT = 'YYYYMMDDTHHmmss+Z';
@@ -37,15 +37,13 @@ module.exports = function () {
             return self.configuration.url + url;
         },
         makeRequest = function (url, callback) {
-            request({
-                'url': url,
-                'rejectUnauthorized': false,
-                'headers': { 'Accept': 'application/json' },
-                'json' : true
-                },
-                function(error, response, body) {
-                    callback(error, body);
-            });
+          request.makeRequest({
+            authentication: self.configuration.authentication,
+            url: url,
+            username: self.configuration.username,
+            password: self.configuration.password,
+            headers: {Accept: 'application/json'}
+          }, callback);
         },
         requestBuilds = function (callback) {
             var requestFinishedBuilds = makeRequest.bind(this, getFinishedBuildsUrl());
@@ -67,7 +65,7 @@ module.exports = function () {
             });
         },
         requestLastCommitDetails = function(build, callback) {
-            if(build.lastChanges.change && build.lastChanges.change[0]) {
+            if(build.lastChanges && build.lastChanges.change && build.lastChanges.change[0]) {
                 makeRequest(getHrefUrl(build.lastChanges.change[0].href), function(error, data) {
                     if (error) {
                         callback(error);
