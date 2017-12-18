@@ -17,7 +17,7 @@ module.exports = function() {
     },
     requestBuild = function(build, callback) {
       request({
-        url: self.configuration.url + '/api/repos/' + self.configuration.repo + '/builds/' + build.id,
+        url: self.configuration.url + '/api/repos/' + self.configuration.repo + '/builds/' + build.number,
         json: true,
         headers: {
           'Authorization': 'Bearer ' + self.configuration.token
