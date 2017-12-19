@@ -31,11 +31,33 @@ module.exports = function() {
         callback(error, simplifyBuild(body));
       });
     },
+    requestLatestBuild = function(callback) {
+      request({
+        url: self.configuration.url + '/api/repos/' + self.configuration.repo + '/builds/latest',
+        json: true,
+        headers: {
+          'Authorization': 'Bearer ' + self.configuration.token
+        }
+      }, function(error, response, body) {
+        if (error) {
+          callback(error);
+          return;
+        }
+
+        callback(error, simplifyBuild(body));
+      });
+    },
     queryBuilds = function(callback) {
       requestBuilds(function(error, body) {
         if (error) {
           callback(error);
           return;
+        }
+
+        if(self.configuration.latestBuildOnly) {
+          var latestBuild = body[0];
+          body = [];
+          body.push(latestBuild);
         }
 
         async.map(body, requestBuild, function(error, results) {
