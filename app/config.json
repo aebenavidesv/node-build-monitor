@@ -7,14 +7,5 @@
     "debug": true
   },
   "services": [
-    {
-      "name": "Drone",
-      "configuration": {
-        "url": "http://drone.labs-v1.walmartdigital.cl",
-        "repo": "walmartdigital/drone-deployer",
-        "latestBuildOnly": true,
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZXh0IjoiYWViZW5hdmlkZXN2IiwidHlwZSI6InVzZXIifQ.9ucqW1DUXhw75BUPY2qHeVeRq3bgADq-rfz_FH_LMlo"
-      }
-    }
   ]
 }
