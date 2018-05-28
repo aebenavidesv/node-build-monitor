@@ -1,6 +1,7 @@
 var request = require('request');
 var async = require('async');
 var moment = require('moment');
+var xml2js = require('xml2js');
 
 module.exports = function() {
   var self = this,
@@ -33,7 +34,7 @@ module.exports = function() {
     },
     requestLatestBuild = function(callback) {
       request({
-        url: self.configuration.url + '/api/repos/' + self.configuration.repo + '/builds/latest',
+        url: self.configuration.url + '/api/badges/' + self.configuration.repo + '/cc.xml',
         json: true,
         headers: {
           'Authorization': 'Bearer ' + self.configuration.token
@@ -44,26 +45,47 @@ module.exports = function() {
           return;
         }
 
-        callback(error, simplifyBuild(body));
+        var p = new xml2js.Parser();
+        p.parseString( body, function( err, result ) { 
+          if(err) {
+            callback(err);
+            return;
+          }
+          var jsonBuild = result.Projects.Project[0].$;
+          jsonBuild.number = jsonBuild.lastBuildLabel;
+          callback(err, jsonBuild);
+        });     
       });
     },
     queryBuilds = function(callback) {
-      requestBuilds(function(error, body) {
-        if (error) {
-          callback(error);
-          return;
-        }
 
-        if(self.configuration.latestBuildOnly) {
-          var latestBuild = body[0];
+      if(self.configuration.latestBuildOnly){
+        requestLatestBuild(function(error, body) {
+          if (error) {
+            callback(error);
+            return;
+          }
+
+          var latestBuild = body;
           body = [];
           body.push(latestBuild);
-        }
 
-        async.map(body, requestBuild, function(error, results) {
-          callback(error, results);
+          async.map(body, requestBuild, function(error, results) {
+            callback(error, results);
+          });
         });
-      });
+      } else {
+        requestBuilds(function(error, body) {
+          if (error) {
+            callback(error);
+            return;
+          }
+
+          async.map(body, requestBuild, function(error, results) {
+            callback(error, results);
+          });
+        });
+      }
     },
     parseDate = function(timestamp) {
       return moment.unix(timestamp).toDate();
