@@ -1,0 +1,10 @@
+{
+  "monitor": {
+    "interval": {{keyOrDefault (print (env "CONSUL_FOLDER") "/interval") "15000" }},
+    "numberOfBuilds": 12,
+    "latestBuildOnly": false,
+    "sortOrder": "date",
+    "debug": true
+  },
+  "services": {{key (print (env "CONSUL_FOLDER") "/services") }}
+}
