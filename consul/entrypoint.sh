@@ -21,7 +21,7 @@ fi
 
 echo "Getting configuration from consul..."
 
-./consul-template -config /config.hcl -log-level err &
+./consul-template -config /config.hcl -once -log-level trace &
 
 echo "Booting application..."
 
