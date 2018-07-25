@@ -52,7 +52,8 @@ module.exports = function() {
             return;
           }
           var jsonBuild = result.Projects.Project[0].$;
-          jsonBuild.number = jsonBuild.lastBuildLabel;
+          var urlSplit = jsonBuild.webUrl.split('/');
+          jsonBuild.number = urlSplit[(urlSplit.length)-1];
           callback(err, jsonBuild);
         });     
       });
