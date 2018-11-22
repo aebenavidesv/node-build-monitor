@@ -1,5 +1,7 @@
 FROM mhart/alpine-node
 
+RUN apk add --no-cache ca-certificates
+
 RUN npm install -g forever
 
 WORKDIR /build-mon
